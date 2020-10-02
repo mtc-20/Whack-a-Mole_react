@@ -5,8 +5,8 @@ import { connect} from 'react-redux'
 
 
 const GameBoard = (props) => {
-    let timeLimit = 11
-    const [timeLeft, setTimeLeft] = useState(timeLimit)
+    // let props.timeLimit = 11;
+    const [timeLeft, setTimeLeft] = useState(props.timeLimit)
 
     useEffect(() => {
         if(!timeLeft) return
@@ -19,9 +19,9 @@ const GameBoard = (props) => {
 
     return(
         <View style={styles.container}>
-      <Text>Mtc's Whack-a-mole App !</Text>
-      <Text>Remaining Time: {timeLeft}</Text>
-      <Text>{props.score} Moles whacked !</Text>
+      <Text style={styles.header}>Mtc's Whack-a-mole App !</Text>
+      <Text style={styles.content}>{timeLeft} s left</Text>
+      <Text style={styles.content}>{props.score} Moles whacked !</Text>
       {/* <StatusBar style="auto" /> */}
 
       <View style={styles.game}>
@@ -46,9 +46,9 @@ const GameBoard = (props) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#87ceeb',
       alignItems: 'center',
-      marginTop: 100
+    //   marginTop: 100
     //   justifyContent: 'center',
     },
     game: {
@@ -56,12 +56,24 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap',
       width: 300,
       paddingTop: 20,
+    },
+    header: {
+        fontWeight: 'bold',
+        fontSize: 32,
+        justifyContent: 'center',
+        marginTop: 30,
+        marginLeft: 50,
+        textAlign: 'center'
+    },
+    content: {
+        fontSize: 20,
     }
   });
 
   const mapStateToProps = state => {
       return {
-          score: state.score
+          score: state.score,
+          timeLimit: state.timeLimit
       }
   }
   

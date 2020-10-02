@@ -1,7 +1,8 @@
 import {ADD_SCORE} from './actionTypes'
 
 const initialState = {
-    score: 0
+    score: 0,
+    timeLimit: 11
 }
 
 const scoreReducer = (state = initialState, action) => {
