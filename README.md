@@ -39,7 +39,7 @@
 - [ ] Introduce levels
 - [ ] Figure out ways to host this as both app and website
 - [ ] Add **Start** and **Reload** buttons
-- [ ] Display Score adn player name at end 
+- [ ] Display Score ann Player name at end 
 
 
 

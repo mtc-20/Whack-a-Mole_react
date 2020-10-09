@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         flex: 1,
         minWidth: 80,
         minHeight: 80,
-        margin: 10,
+        margin: 8,
         // backgroundColor: 'transparent',
         width: '75%',
         height: '75%',

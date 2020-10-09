@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from  'react'
-import  { StyleSheet, Text, View } from 'react-native'
+import  { StyleSheet, Text, View, Linking } from 'react-native'
 import Square from './Square.js'
 import { connect} from 'react-redux'
 
@@ -38,13 +38,19 @@ const GameBoard = (props) => {
         <Square ></Square>
         <Square ></Square>
       </View>
+      <View style={styles.bottom}>
+      <Text style={styles.footer} onPress={() => Linking.openURL('https://github.com/mtc-20')}>Made by @mtc-20 </Text>
+      <Text style={styles.footer} onPress={() => Linking.openURL('https://github.com/mtc-20/Whack-a-Mole_react')}> Github Source </Text>
+      </View>
     </View>
+    
     )
 
 }
 
 const styles = StyleSheet.create({
     container: {
+      // flexDirection: 'column',
       flex: 1,
       backgroundColor: '#87ceeb',
       alignItems: 'center',
@@ -52,7 +58,7 @@ const styles = StyleSheet.create({
     //   justifyContent: 'center',
     },
     game: {
-      // flex: 1,
+      flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
       width: 300,
@@ -63,12 +69,23 @@ const styles = StyleSheet.create({
         fontSize: 32,
         justifyContent: 'center',
         marginTop: 30,
-        marginLeft: 50,
+        marginLeft: 30,
         textAlign: 'center'
     },
     content: {
         fontSize: 20,
         fontStyle: 'italic'
+    }, 
+    bottom: {
+      flex: 1,
+      // flex:3,
+      paddingTop: 225,
+    },
+    footer: {
+      margin: 10,
+      textAlign: 'right',
+      fontSize: 12, 
+      color: 'blue'
     }
   });
 
