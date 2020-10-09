@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     //   justifyContent: 'center',
     },
     game: {
+      // flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
       width: 300,
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
     },
     content: {
         fontSize: 20,
+        fontStyle: 'italic'
     }
   });
 

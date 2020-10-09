@@ -25,7 +25,7 @@ const Square = (props) => {
 
     return (
         <TouchableOpacity onPress={moleActive? props.addScore : null}>
-           <Image source={moleActive? require('./../assets/mole-removebg-preview.png') : require('./../assets/ground.png')} style={moleActive? styles.mole : styles.square} ></Image>
+           <Image source={moleActive? require('./../assets/mole.png') : require('./../assets/ground.png')} style={moleActive? styles.mole : styles.square} ></Image>
         </TouchableOpacity>
     )
 }
@@ -36,17 +36,21 @@ const styles = StyleSheet.create({
         minWidth: 80,
         minHeight: 80,
         margin: 10,
-        // backgroundColor: 'brown',
-        borderRadius: 40
+        // backgroundColor: 'white',
+        borderRadius: 40,
+        overflow: 'hidden',
+        width: '75%',
+        height: '75%',
+        resizeMode: 'contain'
     },
     mole: {
         flex: 1,
         minWidth: 80,
         minHeight: 80,
-        margin: 5,
-        backgroundColor: 'transparent',
-        // width: '75%',
-        // height: '75%',
+        margin: 10,
+        // backgroundColor: 'transparent',
+        width: '75%',
+        height: '75%',
         resizeMode: 'contain'
         
     },
