@@ -2,7 +2,9 @@
 
 **A simple whack-a-mole game made using React and React Native based on Ania Kubow's tutorial.**
 
-[This here][1] is the link to the tutorial video.
+[This here][1] ~~is~~was the link to the tutorial video.
+
+While I mainly did this tutorial because of "whack-a-mole", it was also a good opportunity to learn about React Redux and React Native. Honestly, I still cannot properly wrap my head around Redux, and this app would have been a lot easier without it.
 
 <p text-align='center'>
 <img src='./sample-screen.gif'>
@@ -12,9 +14,9 @@
 </p>
 
 # Prerequisites
-- `node.js`
+- `node.js` 
 - `expo.io`
-- `react`
+- `react` v18
 
 ## Usage
 - After cloning the repo
@@ -24,7 +26,6 @@
     ```
     >Or even 
     >```
-    >cd my-project
     >expo start
     >```
 
@@ -37,9 +38,9 @@
 
 ## Future
 - [ ] Introduce levels
-- [ ] Figure out ways to host this as both app and website
-- [ ] Add **Start** and **Reload** buttons
-- [ ] Display Score ann Player name at end 
+- [x] Figure out ways to host this as both app and website
+- [x] Add **Start** and **Reload** buttons
+- [ ] Display Score and Player name at end 
 
 
 

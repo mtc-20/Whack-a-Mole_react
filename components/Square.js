@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
-import { addScore } from './../redux'
+import { addScore } from '../redux'
 
 
 const Square = (props) => {
     const [moleActive, setMoleActive] = useState(false)
     const [isGameOver, setGameOver] = useState(false)
-    
+
     const randomTime = Math.random() * 20000
     let timerID
     useEffect(() => {
+        // console.log("Square timeL", props.timeLimit)
         timerID = setInterval(() => {
+            // console.log("Mole popped")
             setMoleActive(true)
-            setTimeout(() => {setMoleActive(false)}, 800)
+            setTimeout(() => { setMoleActive(false) }, 800)
         }, randomTime)
-        setTimeout(endGame, props.timeLimit*1000)
+        setTimeout(endGame, props.timeLimit * 1000)
     }, [])
 
     function endGame() {
@@ -24,8 +26,8 @@ const Square = (props) => {
     }
 
     return (
-        <TouchableOpacity onPress={moleActive? props.addScore : null}>
-           <Image source={moleActive? require('./../assets/mole.png') : require('./../assets/ground.png')} style={moleActive? styles.mole : styles.square} ></Image>
+        <TouchableOpacity onPress={moleActive ? props.addScore : null}>
+            <Image source={moleActive ? require('../assets/mole.png') : require('./../assets/ground.png')} style={moleActive ? styles.mole : styles.square} ></Image>
         </TouchableOpacity>
     )
 }
@@ -52,13 +54,13 @@ const styles = StyleSheet.create({
         width: '75%',
         height: '75%',
         resizeMode: 'contain'
-        
+
     },
 })
 
 const mapStateToProps = state => {
     return {
-        score: state.score, 
+        score: state.score,
         timeLimit: state.timeLimit
     }
 }

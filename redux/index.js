@@ -1,1 +1,1 @@
-export {addScore} from './actions'
+export { addScore, updateTimeLimit } from './actions'
