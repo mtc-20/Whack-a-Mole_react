@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, View, Linking, Animated, SafeAreaView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Linking } from 'react-native'
 import Square from './Square'
 import { connect } from 'react-redux'
 import GameMenu from './GameMenu'
+import { resetGame } from '../redux'
 
 
 const GameBoard = (props) => {
@@ -19,9 +20,13 @@ const GameBoard = (props) => {
         if (timeLeft < 0) {
             console.log("Game Over")
             setDisplayScore(true)
+
             console.log("Setting displayScore to true")
             setTimeout(() => {
                 setGameOver(true)
+                props.resetGame()
+                console.log("Resetting game", props.score)
+                setDisplayScore(false)
             }, 5000)
             return
         }
@@ -69,18 +74,13 @@ const GameBoard = (props) => {
                             {/* <StatusBar style="auto" /> */}
 
                             <View style={styles.game}>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
-                                <Square ></Square>
+                                {[...Array(12)].map((e, idx) =>
+                                    <Square
+                                        key={idx}
+                                        timeLeft={timeLeft}>
+
+                                    </Square>
+                                )}
                             </View>
                             <View style={styles.bottomSpacer}>
 
@@ -97,14 +97,14 @@ const GameBoard = (props) => {
 }
 
 const styles = StyleSheet.create({
-    menuContainer: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#246580',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+    // menuContainer: {
+    //     flex: 1,
+    //     width: '100%',
+    //     height: '100%',
+    //     backgroundColor: '#246580',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
     container: {
         // flexDirection: 'column',
         maxHeight: '100vh',
@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 'auto',
         justifyContent: 'space-between',
         aspectRatio: 1,
+        cursor: {
+            uri: require('../assets/icon.png')
+        }
         // paddingTop: 20,
         // borderWidth: 1,
         // borderBottomLeftRadius: 10,
@@ -142,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontStyle: 'italic'
     },
+    // FOOTER //
     bottomSpacer: {
         width: '100%',
         minHeight: '1rem'
@@ -164,6 +168,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'blue'
     },
+    // SCORE DISPLAY //
     scoreContainer: {
         flex: 1,
         width: '95%',
@@ -204,5 +209,10 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        resetGame: () => dispatch(resetGame())
+    }
+}
 
-export default connect(mapStateToProps)(GameBoard) 
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard) 

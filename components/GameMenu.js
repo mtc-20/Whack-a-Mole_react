@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { StyleSheet, Text, Image, TouchableWithoutFeedback, FlatList, SafeAreaView, View, Animated } from "react-native";
+import { StyleSheet, Text, Image, TouchableWithoutFeedback, FlatList, SafeAreaView, View, Animated, Easing } from "react-native";
 import { Instructions } from "./instructions.json"
 import { connect } from "react-redux";
 import { updateTimeLimit } from '../redux'
@@ -13,8 +13,49 @@ const ListItem = ({ title }) => (
 
 const GameMenu = (props,) => {
     const { setGameOver, setTimeLeft } = props;
+    const gameTime = 25;
+
     // fadeAnim will be used as the value for opacity. Initial Value: 1
     const fadeAnim = useRef(new Animated.Value(1)).current;
+    const spinValue = useRef(new Animated.Value(0.5)).current;
+    // First set up animation 
+    Animated.loop(
+        Animated.sequence([
+            Animated.timing(
+                spinValue,
+                {
+                    toValue: 0,
+                    duration: 1500,
+                    easing: Easing.linear, // Easing is an additional import from react-native
+                    useNativeDriver: true  // To make use of native driver for performance
+                }
+            ),
+            Animated.timing(
+                spinValue,
+                {
+                    toValue: 1,
+                    duration: 3000,
+                    easing: Easing.linear, // Easing is an additional import from react-native
+                    useNativeDriver: true  // To make use of native driver for performance
+                }
+            ),
+            Animated.timing(
+                spinValue,
+                {
+                    toValue: 0.5,
+                    duration: 1500,
+                    easing: Easing.linear, // Easing is an additional import from react-native
+                    useNativeDriver: true  // To make use of native driver for performance
+                }
+            )
+
+        ])).start()
+
+    // Next, interpolate beginning and end values (in this case 0 and 1)
+    const spin = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['55deg', '-55deg']
+    })
 
     // const fadeIn = () => {
     //     // Will change fadeAnim value to 1 in 5 seconds
@@ -36,10 +77,10 @@ const GameMenu = (props,) => {
             setGameOver(false);
             // TODO: Find a better way to handle this.
             // Update the time limit in the store so that the moles start popping
-            props.updateTimeLimit(60);
+            props.updateTimeLimit(gameTime);
             // Set time limit so that the timer starts
-            setTimeLeft(60);
-            // console.log("Setting timer to ", 5);
+            setTimeLeft(gameTime);
+            console.log("Setting timer to ", gameTime);
         });
     };
 
@@ -63,7 +104,16 @@ const GameMenu = (props,) => {
                     />
                 </SafeAreaView>
                 <SafeAreaView>
-                    <Image source={require('../assets/mole.png')} style={styles.mole} ></Image>
+                    <Animated.Image
+                        source={require('../assets/mole.png')}
+                        style={[
+                            styles.mole,
+                            {
+                                transform: [{ rotate: spin }]
+                            }
+                        ]} />
+
+                    {/* </Animated.Image> */}
                 </SafeAreaView>
 
                 <Text style={styles.footer}>Click/Tap to play</Text>
@@ -124,14 +174,12 @@ const styles = StyleSheet.create({
     },
     mole: {
         flex: 1,
-        // minWidth: 80,
-        // minHeight: 80,
         margin: 8,
-        // backgroundColor: 'transparent',
+        backgroundColor: '#87ceeb',
         width: '8rem',
         height: '8rem',
-        resizeMode: 'contain'
-
+        resizeMode: 'contain',
+        borderRadius: '50%'
     },
 });
 // export default GameMenu;

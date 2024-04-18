@@ -1,26 +1,42 @@
 {
-  "expo": {
-    "name": "my-whack-a-mole",
-    "slug": "my-whack-a-mole",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/favicon-wolf.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "web": {
-      "favicon": "./assets/favicon-wolf.png"
+    "expo": {
+        "name": "WhAM!",
+        "slug": "myWhackAMole!",
+        "description": "A simple whack-a-mole game made with React Native. Whack a way that stress!!",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "primaryColor": "#246580",
+        "icon": "./public/favicon-wolf.png",
+        "splash": {
+            "image": "./assets/mole.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#246580"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true
+        },
+        "web": {
+            "favicon": "./public/favicon.ico"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "f76cb1a3-83db-47d9-8ada-249d6e28461f"
+            },
+            "gameTime": "30",
+            "fact": "kittens are cool"
+        },
+        "android": {
+            "package": "com.mtc20.mywhackamole!",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/icon3.png",
+                "backgroundColor": "#FFF"
+            }
+        }
     }
-  }
 }

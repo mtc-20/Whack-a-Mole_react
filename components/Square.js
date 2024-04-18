@@ -5,28 +5,54 @@ import { addScore } from '../redux'
 
 
 const Square = (props) => {
+    const { timeLeft } = props;
     const [moleActive, setMoleActive] = useState(false)
+    // This is the square's own GameOver state
     const [isGameOver, setGameOver] = useState(false)
+    const [molePopUpTime, setMolePopUpTime] = useState(1000)
+    const [moleIntervalTime, setMoleIntervalTime] = useState(40000)
 
-    const randomTime = Math.random() * 20000
+    const randomTime = Math.floor(Math.random() * moleIntervalTime)
     let timerID
     useEffect(() => {
         // console.log("Square timeL", props.timeLimit)
         timerID = setInterval(() => {
-            // console.log("Mole popped")
+            console.log("Will check again in ", randomTime)
+            // If the mole is already active, do nothing
+            if (moleActive) return
+            // If the game is over, do nothing
+            if (isGameOver) return
+
             setMoleActive(true)
-            setTimeout(() => { setMoleActive(false) }, 800)
+            // Set a timeout to deactivate the mole
+            setTimeout(() => { setMoleActive(false) }, molePopUpTime)
         }, randomTime)
+
+        // Set a timeout to end the game
         setTimeout(endGame, props.timeLimit * 1000)
     }, [])
+
+    useEffect(() => {
+        if (timeLeft / props.timeLimit === 0.2) {
+            setMolePopUpTime(500)
+            console.log("Time left changed", timeLeft)
+            setMoleIntervalTime(80000)
+        }
+    }, [timeLeft])
 
     function endGame() {
         clearInterval(timerID)
         setGameOver(true)
     }
 
+    function hitMole() {
+        console.log("Mole hit")
+        setMoleActive(false)
+        props.addScore()
+    }
+
     return (
-        <TouchableOpacity onPress={moleActive ? props.addScore : null}>
+        <TouchableOpacity onPress={moleActive ? hitMole : null}>
             <Image source={moleActive ? require('../assets/mole.png') : require('./../assets/ground.png')} style={moleActive ? styles.mole : styles.square} ></Image>
         </TouchableOpacity>
     )

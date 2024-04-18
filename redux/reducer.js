@@ -1,4 +1,4 @@
-import { ADD_SCORE, UPDATE_TIME_LIMIT } from './actionTypes'
+import { ADD_SCORE, UPDATE_TIME_LIMIT, RESET_GAME } from './actionTypes'
 
 const initialState = {
     score: 0,
@@ -15,6 +15,7 @@ const appReducer = (state = initialState, action) => {
             ...state,
             timeLimit: action.payload
         }
+        case RESET_GAME: return initialState
         default: return state
     }
 }
