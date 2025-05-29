@@ -3,7 +3,7 @@
         "name": "WhAM!",
         "slug": "myWhackAMole!",
         "description": "A simple whack-a-mole game made with React Native. Whack a way that stress!!",
-        "version": "1.0.0",
+        "version": "0.2.0",
         "orientation": "portrait",
         "primaryColor": "#246580",
         "icon": "./public/favicon-wolf.png",
@@ -18,6 +18,9 @@
         "assetBundlePatterns": [
             "**/*"
         ],
+        "experiments": {
+            "baseUrl": "/Whack-a-Mole_react"
+        },
         "ios": {
             "supportsTablet": true
         },
@@ -27,14 +30,12 @@
         "extra": {
             "eas": {
                 "projectId": "f76cb1a3-83db-47d9-8ada-249d6e28461f"
-            },
-            "gameTime": "30",
-            "fact": "kittens are cool"
+            }
         },
         "android": {
             "package": "com.mtc20.mywhackamole!",
             "adaptiveIcon": {
-                "foregroundImage": "./assets/icon3.png",
+                "foregroundImage": "./assets/mole.png",
                 "backgroundColor": "#FFF"
             }
         }

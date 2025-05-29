@@ -1,77 +1,110 @@
-import React, { useRef } from "react";
-import { StyleSheet, Text, Image, TouchableWithoutFeedback, FlatList, SafeAreaView, View, Animated, Easing } from "react-native";
-import { Instructions } from "./instructions.json"
+import React, { useEffect, useRef, useState } from "react";
+import {
+    StyleSheet,
+    Text,
+    Image,
+    TouchableWithoutFeedback,
+    FlatList,
+    SafeAreaView,
+    View,
+    Animated,
+    Easing,
+    Dimensions
+} from "react-native";
+import { Instructions } from "./instructions.json";
 import { connect } from "react-redux";
-import { updateTimeLimit } from '../redux'
+import { updateTimeLimit } from "../redux";
+import colors from "./colors";
 
 const ListItem = ({ title }) => (
-    <View style={styles.item}>
-        <Text style={styles.content}>{title}</Text>
+    <View style={styles.listItem}>
+        <Text style={styles.listText}>{title}</Text>
     </View>
 );
 
+// Constants for screen width to handle small screens
+const SMALL_SCREEN_WIDTH = 400;
+// Check the width of the window
+const windowWidth = Dimensions.get("window").width;
+// const windowHeight = Dimensions.get('window').height;
 
-const GameMenu = (props,) => {
+const GameMenu = (props) => {
     const { setGameOver, setTimeLeft } = props;
-    const gameTime = 25;
+    const gameTime = 60;
 
     // fadeAnim will be used as the value for opacity. Initial Value: 1
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const spinValue = useRef(new Animated.Value(0.5)).current;
-    // First set up animation 
+    const opacityValue = useRef(new Animated.Value(1)).current;
+
+    // First set up animation
     Animated.loop(
         Animated.sequence([
-            Animated.timing(
-                spinValue,
-                {
-                    toValue: 0,
-                    duration: 1500,
-                    easing: Easing.linear, // Easing is an additional import from react-native
-                    useNativeDriver: true  // To make use of native driver for performance
-                }
-            ),
-            Animated.timing(
-                spinValue,
-                {
-                    toValue: 1,
-                    duration: 3000,
-                    easing: Easing.linear, // Easing is an additional import from react-native
-                    useNativeDriver: true  // To make use of native driver for performance
-                }
-            ),
-            Animated.timing(
-                spinValue,
-                {
-                    toValue: 0.5,
-                    duration: 1500,
-                    easing: Easing.linear, // Easing is an additional import from react-native
-                    useNativeDriver: true  // To make use of native driver for performance
-                }
-            )
+            Animated.timing(spinValue, {
+                toValue: 0,
+                duration: 1500,
+                easing: Easing.linear, // Easing is an additional import from react-native
+                useNativeDriver: true // To make use of native driver for performance
+            }),
+            Animated.timing(spinValue, {
+                toValue: 1,
+                duration: 3000,
+                easing: Easing.linear, // Easing is an additional import from react-native
+                useNativeDriver: true // To make use of native driver for performance
+            }),
+            Animated.timing(spinValue, {
+                toValue: 0.5,
+                duration: 1500,
+                easing: Easing.linear, // Easing is an additional import from react-native
+                useNativeDriver: true // To make use of native driver for performance
+            })
+            // Animated.timing(opacityValue, {
+            //     toValue: 0,
+            //     duration: 1500,
+            //     useNativeDriver: true
+            // }),
+            // Animated.timing(opacityValue, {
+            //     toValue: 1,
+            //     duration: 1500,
+            //     useNativeDriver: true
+            // })
+        ])
+    ).start();
 
-        ])).start()
+    // Blinking text animation
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacityValue, {
+                    toValue: 0,
+                    duration: 500
+                    // useNativeDriver: true
+                }),
+                Animated.timing(opacityValue, {
+                    toValue: 1,
+                    duration: 750
+                    // useNativeDriver: true
+                })
+            ])
+        ).start();
+
+        // return () => {
+        //     opacityValue.stopAnimation();
+        // };
+    }, [opacityValue]);
 
     // Next, interpolate beginning and end values (in this case 0 and 1)
     const spin = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['55deg', '-55deg']
-    })
-
-    // const fadeIn = () => {
-    //     // Will change fadeAnim value to 1 in 5 seconds
-    //     Animated.timing(fadeAnim, {
-    //         toValue: 1,
-    //         duration: 5000,
-    //         useNativeDriver: true,
-    //     }).start();
-    // };
+        outputRange: ["55deg", "-55deg"]
+    });
 
     const fadeOut = () => {
         // Will change fadeAnim value to 0 in 500ms
         Animated.timing(fadeAnim, {
             toValue: 0.1,
             duration: 500,
-            useNativeDriver: true,
+            useNativeDriver: true
         }).start(() => {
             console.log("Game started");
             setGameOver(false);
@@ -85,118 +118,176 @@ const GameMenu = (props,) => {
     };
 
     return (
-        // <TouchableOpacity style={styles.container} onPress={fadeOut}>
         <TouchableWithoutFeedback style={styles.container} onPress={fadeOut}>
-            <Animated.View style={[
-                styles.container,
-                {
-                    // Bind opacity to animated value
-                    opacity: fadeAnim,
-                },
-            ]}>
-
-                <Text style={styles.header}>Whack-a-mole</Text>
+            <Animated.View
+                style={[
+                    styles.container,
+                    {
+                        // Bind opacity to animated value
+                        opacity: fadeAnim
+                    }
+                ]}
+            >
+                <Text style={styles.header}>Wha-a-m!</Text>
+                <Text style={styles.subHeader}>Whack-A-Mole!!</Text>
                 <SafeAreaView>
                     <FlatList
                         data={Instructions}
-                        renderItem={({ item }) => <ListItem title={item.title} />}
-                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => (
+                            <ListItem title={item.title} />
+                        )}
+                        keyExtractor={(item) => item.id}
+                        style={styles.listContainer}
                     />
                 </SafeAreaView>
                 <SafeAreaView>
                     <Animated.Image
-                        source={require('../assets/mole.png')}
+                        source={require("../assets/mole.png")}
                         style={[
                             styles.mole,
                             {
                                 transform: [{ rotate: spin }]
                             }
-                        ]} />
-
-                    {/* </Animated.Image> */}
+                        ]}
+                    />
                 </SafeAreaView>
-
-                <Text style={styles.footer}>Click/Tap to play</Text>
+                <Text
+                    style={
+                        windowWidth < SMALL_SCREEN_WIDTH
+                            ? styles.smallScreenBox
+                            : styles.largeScreenBox
+                    }
+                ></Text>
+                {windowWidth < SMALL_SCREEN_WIDTH ? (
+                    <Animated.Text
+                        style={[styles.infoBoxSmall, { opacity: opacityValue }]}
+                    >
+                        Tap to play
+                    </Animated.Text>
+                ) : (
+                    <Animated.Text
+                        style={[styles.infoBox, { opacity: opacityValue }]}
+                    >
+                        Click anywhere to play
+                    </Animated.Text>
+                )}
+                <Text style={styles.footer}>
+                    <Image
+                        source={require("../public/favicon-32x32.png")}
+                        style={styles.footerIcon}
+                    />
+                    <Text style={styles.footerText}>An Inkwolf production</Text>
+                </Text>
             </Animated.View>
         </TouchableWithoutFeedback>
-        // </TouchableOpacity>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'column',
+        alignItems: "center",
+        backgroundColor: colors.darkBlue,
+        display: "flex",
+        flexDirection: "column",
         flex: 1,
-        backgroundColor: '#246580',
-        alignItems: 'center',
-        maxWidth: '100%',
-
-        //   marginTop: 100
-        //   justifyContent: 'center',
-    },
-    header: {
-        fontWeight: 'bold',
-        fontSize: '5rem',
-        justifyContent: 'center',
-        marginTop: '2rem',
-        // marginLeft: 30,
-        textAlign: 'center',
-        color: '#fff'
-    },
-    content: {
-        fontSize: '1rem',
-        color: '#fff',
-        // fontSize: 20,
-        // alignItems: 'center',
-        textAlign: 'left',
-        // fontStyle: 'italic'
-    },
-    item: {
-        padding: '0.1rem',
-        marginLeft: '2.5rem',
-        marginVertical: '1rem',
-    },
-    bottom: {
-        flex: 1,
-        // flex:3,
-        paddingTop: 225,
+        maxWidth: "100%"
     },
     footer: {
-        display: 'flex',
-        fontSize: '5rem',
-        color: '#fff',
-        fontStyle: 'italic',
-        textAlign: 'center',
-        marginTop: '1rem'
-        // fontSize: '2rem',
-        // color: 'blue'
+        bottom: 0,
+        color: colors.white,
+        display: "flex",
+        fontSize: "1rem",
+        fontStyle: "italic",
+        margin: ".25rem",
+        position: "absolute",
+        textAlign: "center"
+        // marginTop: '1rem'
+    },
+    footerIcon: {
+        height: 32,
+        marginRight: ".2rem",
+        resizeMode: "contain",
+        width: 32
+    },
+    footerText: {
+        marginLeft: ".2rem"
+        // marginTop: '1rem'
+    },
+    header: {
+        color: colors.white,
+        fontSize: "5rem",
+        fontWeight: "bold",
+        justifyContent: "center",
+        marginTop: "2rem",
+        textAlign: "center"
+    },
+    infoBox: {
+        color: colors.white,
+        display: "flex",
+        fontSize: "5rem",
+        fontStyle: "italic",
+        marginTop: "1rem",
+        textAlign: "center"
+    },
+    infoBoxSmall: {
+        color: colors.white,
+        display: "flex",
+        fontSize: "2rem",
+        fontStyle: "italic",
+        marginTop: "1rem",
+        textAlign: "center"
+    },
+    listContainer: {
+        borderBottomLeftRadius: "1rem",
+        borderBottomRightRadius: "1rem",
+        borderColor: colors.skyBlue,
+        borderStyle: "solid",
+        borderWidth: 5,
+
+        // backgroundColor: colors.skyBlue,
+        // borderRadius: "1rem",
+        marginVertical: "1rem",
+        paddingRight: "1.5rem"
+    },
+    listItem: {
+        marginLeft: "1.5rem",
+        marginVertical: "0.5rem",
+        padding: "0.1rem"
+    },
+    listText: {
+        color: colors.white,
+        fontSize: "1rem",
+        textAlign: "left"
     },
     mole: {
+        backgroundColor: colors.skyBlue,
+        borderRadius: "50%",
         flex: 1,
+        height: "8rem",
         margin: 8,
-        backgroundColor: '#87ceeb',
-        width: '8rem',
-        height: '8rem',
-        resizeMode: 'contain',
-        borderRadius: '50%'
+        resizeMode: "contain",
+        width: "8rem"
     },
+    subHeader: {
+        color: colors.skyBlue,
+        fontSize: "2.5rem",
+        fontWeight: "bold",
+        justifyContent: "center",
+        marginTop: "1rem",
+        textAlign: "center"
+    }
 });
-// export default GameMenu;
 
 const mapStateToProps = (state) => {
     return {
-        timeLimit: state.timeLimit,
-        // ownProps
-        // setGameOver: ownProps.setGameOver,
-        // setTimeLeft: ownProps.setTimeLeft
-    }
-}
+        timeLimit: state.timeLimit
+    };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         updateTimeLimit: (value) => dispatch(updateTimeLimit(value))
-    }
-}
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(GameMenu);
