@@ -7,7 +7,12 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+
+# Build folders
 web-build/
+dist/
+android/
+ios/
 
 # macOS
 .DS_Store

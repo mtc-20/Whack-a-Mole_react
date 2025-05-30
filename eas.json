@@ -1,0 +1,20 @@
+{
+    "cli": {
+        "appVersionSource": "local"
+    },
+    "build": {
+        "development": {
+            "android": {
+                "buildType": "apk",
+                "distribution": "internal",
+                "gradleCommand": ":app:assembleRelease"
+            }
+        },
+        "preview": {
+            "android": {
+                "buildType": "apk",
+                "gradleCommand": ":app:assembleRelease"
+            }
+        }
+    }
+}
