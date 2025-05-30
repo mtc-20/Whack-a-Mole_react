@@ -1,12 +1,12 @@
 {
     "expo": {
         "name": "WhAM!",
-        "slug": "myWhackAMole!",
+        "slug": "my-whack-a-mole",
         "description": "A simple whack-a-mole game made with React Native. Whack a way that stress!!",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "orientation": "portrait",
         "primaryColor": "#246580",
-        "icon": "./public/favicon-wolf.png",
+        "icon": "./public/favicon-32x32.png",
         "splash": {
             "image": "./assets/mole.png",
             "resizeMode": "contain",
@@ -15,14 +15,13 @@
         "updates": {
             "fallbackToCacheTimeout": 0
         },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
+        "assetBundlePatterns": ["**/*"],
         "experiments": {
             "baseUrl": "/Whack-a-Mole_react"
         },
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.mtc20.mywhackamole"
         },
         "web": {
             "favicon": "./public/favicon.ico"
@@ -33,7 +32,7 @@
             }
         },
         "android": {
-            "package": "com.mtc20.mywhackamole!",
+            "package": "com.mtc20.mywhackamole",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/mole.png",
                 "backgroundColor": "#FFF"

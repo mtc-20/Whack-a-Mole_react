@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import { connect } from "react-redux";
 import { addScore } from "../redux";
@@ -16,18 +16,31 @@ const Square = (props) => {
     const [molePopUpTime, setMolePopUpTime] = useState(1000);
     const [moleIntervalTime, setMoleIntervalTime] = useState(40000);
 
-    const randomTime = Math.floor(Math.random() * moleIntervalTime);
-    let timerID;
+    // Persist timer IDs and state refs
+    const intervalRef = useRef();
+    const timeoutRef = useRef();
+    const moleActiveRef = useRef(moleActive);
+    const isGameOverRef = useRef(isGameOver);
+
+    // Keep refs in sync with state
     useEffect(() => {
-        // console.log("Square timeL", props.timeLimit)
-        timerID = setInterval(() => {
+        moleActiveRef.current = moleActive;
+    }, [moleActive]);
+    useEffect(() => {
+        isGameOverRef.current = isGameOver;
+    }, [isGameOver]);
+
+    useEffect(() => {
+        const randomTime = Math.floor(Math.random() * moleIntervalTime);
+        intervalRef.current = setInterval(() => {
             // console.log("Will check again in ", randomTime)
             // If the mole is already active, do nothing
-            if (moleActive === 1 || moleActive === 2) return;
+            if (moleActiveRef.current === 1 || moleActiveRef.current === 2)
+                return;
             // If the game is over, do nothing
-            if (isGameOver) return;
-
+            if (isGameOverRef.current) return;
             setMoleActive(1);
+
             // Set a timeout to deactivate the mole
             setTimeout(() => {
                 setMoleActive(0);
@@ -35,11 +48,19 @@ const Square = (props) => {
         }, randomTime);
 
         // Set a timeout to end the game
-        setTimeout(endGame, props.timeLimit * 1000);
-    }, []);
+        // setTimeout(endGame, props.timeLimit * 1000);
+        timeoutRef.current = setTimeout(() => {
+            // console.log("Ending game after timeout");
+            endGame();
+        }, props.timeLimit * 1000);
+        return () => {
+            clearInterval(intervalRef.current);
+            clearTimeout(timeoutRef.current);
+        };
+    }, [molePopUpTime, moleIntervalTime, props.timeLimit]);
 
     useEffect(() => {
-        if (timeLeft / props.timeLimit === 0.2) {
+        if (timeLeft / props.timeLimit === 0.25) {
             setMolePopUpTime(500);
             console.log("Time left changed", timeLeft);
             setMoleIntervalTime(80000);
@@ -47,12 +68,13 @@ const Square = (props) => {
     }, [timeLeft]);
 
     function endGame() {
-        clearInterval(timerID);
+        clearInterval(intervalRef.current);
+        clearTimeout(timeoutRef.current);
         setGameOver(true);
     }
 
     function hitMole() {
-        console.log("Mole hit");
+        // console.log("Mole hit");
         setMoleActive(2);
         props.addScore();
     }
@@ -68,7 +90,6 @@ const Square = (props) => {
     };
 
     return (
-        // <TouchableOpacity onPress={moleActive ? hitMole : null}>
         <TouchableOpacity onPress={handlePress}>
             {moleActive === 0 && (
                 <Image source={image_ground} style={styles.square} />
@@ -79,12 +100,6 @@ const Square = (props) => {
             {moleActive === 2 && (
                 <Image source={image_ground} style={styles.hit} />
             )}
-            {/* <Image 
-                source={moleActive 
-                    ? image_mole 
-                    : image_ground} 
-                style={moleActive ? styles.mole : styles.square} 
-            ></Image> */}
         </TouchableOpacity>
     );
 };
@@ -92,11 +107,12 @@ const Square = (props) => {
 const styles = StyleSheet.create({
     hit: {
         backgroundColor: colors.brown,
-        borderRadius: "50%",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         flex: 1,
-        height: "75%",
+        height: "auto",
         margin: 8,
-        minHeight: 80,
+        minHeight: 10,
         minWidth: 80,
         width: "75%"
     },

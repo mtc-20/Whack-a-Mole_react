@@ -4,7 +4,7 @@ import Square from "./Square";
 import { connect } from "react-redux";
 import GameMenu from "./GameMenu";
 import { resetGame } from "../redux";
-import { FlatList } from "react-native-web";
+import { FlatList } from "react-native";
 import colors from "./colors";
 
 const GameBoard = (props) => {
@@ -29,11 +29,12 @@ const GameBoard = (props) => {
             console.log("Game Over");
             setDisplayScore(true);
 
-            console.log("Setting displayScore to true");
+            // console.log("Setting displayScore to true", props.score);
+            // Set game over to true, reset the game after 5 seconds
             setTimeout(() => {
                 setGameOver(true);
                 props.resetGame();
-                console.log("Resetting game", props.score);
+                // console.log("Resetting game", props.score);
                 setDisplayScore(false);
             }, 5000);
             return;
@@ -52,19 +53,23 @@ const GameBoard = (props) => {
     ) : displayScore ? (
         <View style={styles.scoreContainer}>
             <Text style={styles.scoreHeader}>GAME OVER</Text>
-            <Text style={styles.scoreContent}>You scored {props.score} !</Text>
+            <Text style={styles.scoreSubHeader}>
+                You whammed {props.score} moles!{" "}
+            </Text>
+            {/* <Text style={styles.scoreContent}>Score: </Text>
+            <Text style={styles.scoreSubHeader}>{props.score}</Text> */}
             <Text style={styles.scoreFooter}>
                 This will return to the title section in a couple of seconds.
             </Text>
         </View>
     ) : (
         <View style={styles.container}>
-            <Text style={styles.header}>Mtc's Whack-a-mole App !</Text>
-            <Text style={styles.content}>{timeLeft} s left</Text>
-            <Text style={styles.content}>{props.score} Moles whacked !</Text>
+            <Text style={styles.header}>Wha-a-m!!</Text>
+            <Text style={styles.hudTimer}>TIME: {timeLeft} s</Text>
+            <Text style={styles.hudScore}>SCORE: {props.score}</Text>
 
             <View style={styles.game}>
-                {/* Generate a 4x3 grid */}
+                {/* Generate a 4x3 (row x col) grid */}
                 <FlatList
                     data={renderData}
                     renderItem={renderSquare}
@@ -110,27 +115,44 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginHorizontal: "auto",
         maxHeight: "80vh",
-        maxWidth: "98%",
-        width: 500
+        maxWidth: 700,
+        width: "98%"
     },
     row: {
         justifyContent: "space-around"
     },
     header: {
-        fontSize: 32,
+        fontSize: 68,
         fontWeight: "bold",
         justifyContent: "center",
-        marginLeft: 30,
         marginTop: 30,
-        textAlign: "center"
+        textAlign: "center",
+        width: "100%"
     },
-    content: {
+    hudTimer: {
+        display: "flex",
         fontSize: 20,
-        fontStyle: "italic"
+        fontStyle: "italic",
+        marginTop: 10
+    },
+    hudScore: {
+        alignSelf: "flex-end",
+        fontFamily: "monospace",
+        fontSize: 20,
+        // fontStyle: "italic",
+        fontWeight: "800",
+        marginRight: 36,
+        marginTop: 8,
+        textAlign: "right",
+        borderStyle: "dashed",
+        borderWidth: 2,
+        paddingHorizontal: 8,
+        paddingTop: 2,
+        display: "flex"
     },
     // FOOTER //
     bottomSpacer: {
-        minHeight: "1rem",
+        minHeight: 16,
         width: "100%"
     },
     footer: {
@@ -163,30 +185,46 @@ const styles = StyleSheet.create({
         alignContent: "center",
         alignItems: "center",
         backgroundColor: colors.darkBlue,
+        display: "flex",
         flex: 1,
         flexDirection: "column",
-        marginHorizontal: "auto",
-        width: "95%"
+        marginHorizontal: "auto"
     },
     scoreHeader: {
-        fontSize: "4rem",
+        fontSize: 64, //"4rem",
         fontWeight: "bold",
         justifyContent: "center",
-        marginTop: "10%",
-        // marginLeft: 30,
-        textAlign: "center"
+        marginTop: 100, //"10%",
+        textAlign: "center",
+        width: "100%",
+        flexWrap: "wrap",
+        fontFamily: "sans-serif-condensed"
     },
     scoreContent: {
         color: colors.white,
-        fontSize: "1.5rem",
+        display: "flex",
+        fontSize: 18, //"1.5rem",
         fontWeight: "bold",
         marginTop: "2rem",
         textAlign: "center"
     },
+    scoreSubHeader: {
+        color: colors.white,
+        display: "flex",
+        fontSize: 30, //"1.5rem",
+        fontWeight: "bold",
+        marginTop: 80,
+        textAlign: "center",
+        flexWrap: "wrap",
+        width: "100%"
+    },
     scoreFooter: {
-        fontSize: "1rem",
+        color: colors.skyBlue,
+        fontSize: 18,
         fontStyle: "italic",
-        marginTop: "7.5rem",
+        marginTop: 50, //"7.5rem",
+        paddingTop: 100, //"7.5rem",
+        paddingHorizontal: 50, //"7.5rem",
         textAlign: "center"
     }
 });

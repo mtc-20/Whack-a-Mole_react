@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
     StyleSheet,
     Text,
@@ -18,15 +18,15 @@ import colors from "./colors";
 
 const ListItem = ({ title }) => (
     <View style={styles.listItem}>
-        <Text style={styles.listText}>{title}</Text>
+        <Text style={styles.listText}>{`\u29BF  ${title}`}</Text>
     </View>
 );
 
 // Constants for screen width to handle small screens
-const SMALL_SCREEN_WIDTH = 400;
+const SMALL_SCREEN_WIDTH = 600;
 // Check the width of the window
 const windowWidth = Dimensions.get("window").width;
-// const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get("window").height;
 
 const GameMenu = (props) => {
     const { setGameOver, setTimeLeft } = props;
@@ -58,16 +58,6 @@ const GameMenu = (props) => {
                 easing: Easing.linear, // Easing is an additional import from react-native
                 useNativeDriver: true // To make use of native driver for performance
             })
-            // Animated.timing(opacityValue, {
-            //     toValue: 0,
-            //     duration: 1500,
-            //     useNativeDriver: true
-            // }),
-            // Animated.timing(opacityValue, {
-            //     toValue: 1,
-            //     duration: 1500,
-            //     useNativeDriver: true
-            // })
         ])
     ).start();
 
@@ -77,20 +67,16 @@ const GameMenu = (props) => {
             Animated.sequence([
                 Animated.timing(opacityValue, {
                     toValue: 0,
-                    duration: 500
-                    // useNativeDriver: true
+                    duration: 500,
+                    useNativeDriver: true
                 }),
                 Animated.timing(opacityValue, {
                     toValue: 1,
-                    duration: 750
-                    // useNativeDriver: true
+                    duration: 750,
+                    useNativeDriver: true
                 })
             ])
         ).start();
-
-        // return () => {
-        //     opacityValue.stopAnimation();
-        // };
     }, [opacityValue]);
 
     // Next, interpolate beginning and end values (in this case 0 and 1)
@@ -130,16 +116,12 @@ const GameMenu = (props) => {
             >
                 <Text style={styles.header}>Wha-a-m!</Text>
                 <Text style={styles.subHeader}>Whack-A-Mole!!</Text>
-                <SafeAreaView>
-                    <FlatList
-                        data={Instructions}
-                        renderItem={({ item }) => (
-                            <ListItem title={item.title} />
-                        )}
-                        keyExtractor={(item) => item.id}
-                        style={styles.listContainer}
-                    />
-                </SafeAreaView>
+                <FlatList
+                    data={Instructions}
+                    renderItem={({ item }) => <ListItem title={item.title} />}
+                    keyExtractor={(item) => item.id}
+                    style={styles.listContainer}
+                />
                 <SafeAreaView>
                     <Animated.Image
                         source={require("../assets/mole.png")}
@@ -190,18 +172,18 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         flex: 1,
+        maxHeight: "100%",
         maxWidth: "100%"
     },
     footer: {
         bottom: 0,
         color: colors.white,
         display: "flex",
-        fontSize: "1rem",
+        fontSize: 16,
         fontStyle: "italic",
-        margin: ".25rem",
+        margin: 8, //".25rem",
         position: "absolute",
         textAlign: "center"
-        // marginTop: '1rem'
     },
     footerIcon: {
         height: 32,
@@ -211,70 +193,71 @@ const styles = StyleSheet.create({
     },
     footerText: {
         marginLeft: ".2rem"
-        // marginTop: '1rem'
     },
     header: {
         color: colors.white,
-        fontSize: "5rem",
+        fontSize: 72,
         fontWeight: "bold",
         justifyContent: "center",
         marginTop: "2rem",
-        textAlign: "center"
+        textAlign: "center",
+        width: "100%"
     },
     infoBox: {
         color: colors.white,
         display: "flex",
         fontSize: "5rem",
         fontStyle: "italic",
-        marginTop: "1rem",
+        marginTop: 16,
         textAlign: "center"
     },
     infoBoxSmall: {
         color: colors.white,
         display: "flex",
-        fontSize: "2rem",
+        fontSize: 40, //"2rem",
         fontStyle: "italic",
-        marginTop: "1rem",
+        marginTop: 16,
         textAlign: "center"
     },
     listContainer: {
-        borderBottomLeftRadius: "1rem",
-        borderBottomRightRadius: "1rem",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
         borderColor: colors.skyBlue,
         borderStyle: "solid",
         borderWidth: 5,
-
-        // backgroundColor: colors.skyBlue,
-        // borderRadius: "1rem",
-        marginVertical: "1rem",
+        height: "auto",
+        marginVertical: 16,
+        maxHeight: "15%",
+        padding: 0,
         paddingRight: "1.5rem"
     },
     listItem: {
-        marginLeft: "1.5rem",
-        marginVertical: "0.5rem",
+        height: "auto",
+        marginHorizontal: 10, //"1.5rem",
+        marginVertical: 1, //"0.5rem",
         padding: "0.1rem"
     },
     listText: {
         color: colors.white,
-        fontSize: "1rem",
+        fontSize: 16,
         textAlign: "left"
     },
     mole: {
         backgroundColor: colors.skyBlue,
-        borderRadius: "50%",
-        flex: 1,
-        height: "8rem",
-        margin: 8,
+        borderRadius: Math.round(windowWidth + windowHeight) / 2, //"50%",
+        height: Math.round(windowHeight) / 4, //"8rem",
+        margin: 0,
         resizeMode: "contain",
-        width: "8rem"
+        width: Math.round(windowHeight) / 4 //"8rem"
     },
     subHeader: {
         color: colors.skyBlue,
-        fontSize: "2.5rem",
+        fontSize: 36, //"2.5rem",
         fontWeight: "bold",
         justifyContent: "center",
-        marginTop: "1rem",
-        textAlign: "center"
+        marginTop: 12,
+        textAlign: "center",
+        width: "100%"
     }
 });
 
