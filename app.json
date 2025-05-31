@@ -3,7 +3,7 @@
         "name": "WhAM!",
         "slug": "my-whack-a-mole",
         "description": "A simple whack-a-mole game made with React Native. Whack a way that stress!!",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "orientation": "portrait",
         "primaryColor": "#246580",
         "icon": "./public/favicon-32x32.png",
@@ -37,6 +37,17 @@
                 "foregroundImage": "./assets/mole.png",
                 "backgroundColor": "#FFF"
             }
-        }
+        },
+        "plugins": [
+            [
+                "expo-build-properties",
+                {
+                    "android": {
+                        "enableProguardInReleaseBuilds": true,
+                        "enableShrinkResourcesInReleaseBuilds": true
+                    }
+                }
+            ]
+        ]
     }
 }
