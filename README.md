@@ -3,17 +3,20 @@
 ![Node.js][shield-node]
 ![React][shield-react]
 ![React Native][shield-rn]
+![Expo][shield-expo]
+![supports Android](https://img.shields.io/badge/Android-A4C639.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff)
 
 **A simple whack-a-mole game made using React and React Native based on Ania Kubow's tutorial.**
 
-[This here][1] ~~is~~was the link to the tutorial video.
+[This here][1] ~~is~~ was the link to the tutorial video.
 
 While I mainly did this tutorial because of "whack-a-mole", it was also a good opportunity to learn about React Redux and React Native. Honestly, I still cannot properly wrap my head around Redux, and this app would have been a lot easier without it.
 
-<p text-align='center'>
-  <img src='./sample-screen.gif'>
-  <em>Preview</em>
+
+<p align="center">
+  <img src="./sample-screen.gif" alt="Preview v0.2.2">
 </p>
+
 
 ## Usage
 
@@ -24,7 +27,7 @@ While I mainly did this tutorial because of "whack-a-mole", it was also a good o
 
 ### Prerequisites
 
-![NodeJS logo][shield-nodejs-logo] ![Expo][shield-expo]
+![NodeJS logo][shield-nodejs-logo] ![Expo][shield-expo-logo]
 
 If you already have some version of node installed, I would recommend using a Node version Manager to manage multiple versions of node. With `nvm`, you can easily switch between different versions:
 
@@ -38,7 +41,10 @@ If you already have some version of node installed, I would recommend using a No
  nvm install 18 --lts
 ```
 
-### Usage
+> [!NOTE] 
+> For Android builds, you will need an Expo account
+
+### Setup
 
 1. Clone this repo
 
@@ -62,8 +68,10 @@ If you already have some version of node installed, I would recommend using a No
 
   This should open a page in your browser. 
   - To test live on Android, install the [expo app](https://play.google.com/store/apps/details?id=host.exp.exponent), and from the app, scan the QR code on the terminal
-    > [!NOTE]
+  
+    > [!NOTE] 
     > If it says network error on your android device, select `Tunnel` Connection from the left menu tab, and rescan the newly generated QR code 
+  
   - To test directly on your web browser, select `Run in web browser` from the left menu tab 
   - Alternatively, it is possible to run them on "virtual" android or iOS (MacOS is required for testing on simulated iOS) devices, but I have not tried them yet. Please follow the [tutorial][1] for this approach
 
@@ -74,13 +82,9 @@ If you already have some version of node installed, I would recommend using a No
   >   npm run web
   > ```
 
-## Future
 
-- [ ] Introduce levels
-- [x] Figure out ways to host this as both app and website
-- [x] Add **Start** and **Reload** buttons
-- [ ] Display Score and Player name at end
-
+## Resources
+- Whack sound effect: [Pixabay][10]
 
 
 <!-- LINKS -->
@@ -92,11 +96,16 @@ If you already have some version of node installed, I would recommend using a No
 [6]: https://github.com/coreybutler/nvm-windows
 [7]: https://github.com/mtc-20/Whack-a-Mole_react/releases/download/v0.1-alpha/my-whack-a-mole-signed.apk
 [8]: https://github.com/mtc-20/Whack-a-Mole_react/releases
+[9]: https://expo.dev/signup
 
+[10]: https://pixabay.com/sound-effects/search/whack/
+
+<!-- BADGES -->
 [shield-node]: https://img.shields.io/badge/node-18.x-green
 [shield-nodejs-logo]: https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white
 [shield-react]: https://img.shields.io/badge/React-18.2-blue
 [shield-rn]: https://img.shields.io/badge/React_Native-0.73-green
-[shield-expo]: https://img.shields.io/badge/Build-000.svg?style=for-the-badge&logo=EXPO&labelColor=000&logoColor=FFF
+[shield-expo]: https://img.shields.io/badge/expo-SDK_50-black
+[shield-expo-logo]: https://img.shields.io/badge/Expo-000.svg?style=for-the-badge&logo=EXPO&labelColor=000&logoColor=FFF
 [shield-android]: https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=Android&logoColor=white
 [shield-html5]: https://shields.io/badge/HTML-f06529?logo=html5&logoColor=white&labelColor=f06529 

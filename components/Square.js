@@ -1,11 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Vibration,
+    Platform
+} from "react-native";
 import { connect } from "react-redux";
 import { addScore } from "../redux";
 import colors from "./colors";
+import { Audio } from "expo-av";
 
 const image_mole = require("../assets/mole.png");
 const image_ground = require("../assets/ground.png");
+const audio_whack = require("../assets/whack04-105536.mp3");
 
 const Square = (props) => {
     const { timeLeft } = props;
@@ -15,12 +23,14 @@ const Square = (props) => {
     const [isGameOver, setGameOver] = useState(false);
     const [molePopUpTime, setMolePopUpTime] = useState(1000);
     const [moleIntervalTime, setMoleIntervalTime] = useState(40000);
+    // const [soundffect, setSoundEffect] = useState();
 
     // Persist timer IDs and state refs
     const intervalRef = useRef();
     const timeoutRef = useRef();
     const moleActiveRef = useRef(moleActive);
     const isGameOverRef = useRef(isGameOver);
+    const soundEffect = useRef(null);
 
     // Keep refs in sync with state
     useEffect(() => {
@@ -73,9 +83,48 @@ const Square = (props) => {
         setGameOver(true);
     }
 
+    // Load sound effect once when the component mounts
+    useEffect(() => {
+        let isMounted = true;
+        async function loadSound() {
+            // console.log("Loading audio");
+            const { sound } = await Audio.Sound.createAsync(audio_whack);
+            if (isMounted) {
+                soundEffect.current = sound;
+                // console.log("Audio loaded");
+            }
+        }
+        loadSound();
+
+        return () => {
+            isMounted = false;
+            if (soundEffect.current) {
+                // console.log("Unloading Sound");
+                soundEffect.current.unloadAsync();
+            }
+        };
+    }, []);
+
+    async function playSound() {
+        try {
+            if (soundEffect.current) {
+                await soundEffect.current.replayAsync();
+            }
+        } catch (e) {
+            console.error("Error playing sound:", e);
+        }
+    }
+
     function hitMole() {
         // console.log("Mole hit");
+        // Play sound effect
+        playSound();
+        // Vibrate the device if on Android
+        if (Platform.OS === "android") {
+            Vibration.vibrate(50);
+        }
         setMoleActive(2);
+        // Increment the score
         props.addScore();
     }
 

@@ -6,11 +6,14 @@ import GameMenu from "./GameMenu";
 import { resetGame } from "../redux";
 import { FlatList } from "react-native";
 import colors from "./colors";
+import { saveScore } from "./utils";
+import ScoreBoard from "./ScoreBoard";
 
 const GameBoard = (props) => {
     const [timeLeft, setTimeLeft] = useState(props.timeLimit);
     const [isGameOver, setGameOver] = useState(true);
     const [displayScore, setDisplayScore] = useState(false);
+    const [topScores, setTopScores] = useState([]);
     // console.log(props.timeLimit)
 
     // Functions for FlatList (grid)
@@ -48,6 +51,13 @@ const GameBoard = (props) => {
         };
     }, [timeLeft]);
 
+    // Update top scores when the game is over
+    useEffect(() => {
+        if (displayScore) {
+            saveScore(props.score).then(setTopScores);
+        }
+    }, [displayScore]);
+
     return isGameOver ? (
         <GameMenu setGameOver={setGameOver} setTimeLeft={setTimeLeft} />
     ) : displayScore ? (
@@ -56,15 +66,16 @@ const GameBoard = (props) => {
             <Text style={styles.scoreSubHeader}>
                 You whammed {props.score} moles!{" "}
             </Text>
-            {/* <Text style={styles.scoreContent}>Score: </Text>
-            <Text style={styles.scoreSubHeader}>{props.score}</Text> */}
+
+            <ScoreBoard topScores={topScores} />
+
             <Text style={styles.scoreFooter}>
                 This will return to the title section in a couple of seconds.
             </Text>
         </View>
     ) : (
         <View style={styles.container}>
-            <Text style={styles.header}>Wha-a-m!!</Text>
+            <Text style={styles.header}>Wh-a-m!!</Text>
             <Text style={styles.hudTimer}>TIME: {timeLeft} s</Text>
             <Text style={styles.hudScore}>SCORE: {props.score}</Text>
 
@@ -139,7 +150,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         fontFamily: "monospace",
         fontSize: 20,
-        // fontStyle: "italic",
         fontWeight: "800",
         marginRight: 36,
         marginTop: 8,
@@ -176,7 +186,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         justifyContent: "flex-end",
         margin: 10,
-        // position: "absolute",
         right: 0,
         textAlign: "right"
     },
@@ -191,29 +200,24 @@ const styles = StyleSheet.create({
         marginHorizontal: "auto"
     },
     scoreHeader: {
+        flexWrap: "wrap",
+        fontFamily: "sans-serif-condensed",
         fontSize: 64, //"4rem",
         fontWeight: "bold",
         justifyContent: "center",
-        marginTop: 100, //"10%",
+        marginTop: 50, //"10%",
         textAlign: "center",
-        width: "100%",
-        flexWrap: "wrap",
-        fontFamily: "sans-serif-condensed"
-    },
-    scoreContent: {
-        color: colors.white,
-        display: "flex",
-        fontSize: 18, //"1.5rem",
-        fontWeight: "bold",
-        marginTop: "2rem",
-        textAlign: "center"
+        width: "100%"
     },
     scoreSubHeader: {
         color: colors.white,
         display: "flex",
+        fontFamily: "monospace",
         fontSize: 30, //"1.5rem",
         fontWeight: "bold",
-        marginTop: 80,
+        justifyContent: "center",
+        marginBottom: 15,
+        marginTop: 30,
         textAlign: "center",
         flexWrap: "wrap",
         width: "100%"
@@ -222,10 +226,12 @@ const styles = StyleSheet.create({
         color: colors.skyBlue,
         fontSize: 18,
         fontStyle: "italic",
-        marginTop: 50, //"7.5rem",
-        paddingTop: 100, //"7.5rem",
         paddingHorizontal: 50, //"7.5rem",
-        textAlign: "center"
+        textAlign: "center",
+        position: "absolute",
+        bottom: 0,
+        marginBottom: 24,
+        paddingBottom: 24
     }
 });
 
