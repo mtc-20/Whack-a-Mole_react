@@ -15,7 +15,7 @@
         "updates": {
             "fallbackToCacheTimeout": 0
         },
-        "assetBundlePatterns": ["**/*"],
+        "assetBundlePatterns": ["assets/*"],
         "experiments": {
             "baseUrl": "/Whack-a-Mole_react"
         },
@@ -33,6 +33,7 @@
         },
         "android": {
             "package": "com.mtc20.mywhackamole",
+            "minifyEnabled": true,
             "adaptiveIcon": {
                 "foregroundImage": "./assets/mole.png",
                 "backgroundColor": "#FFF"
@@ -44,7 +45,7 @@
                 {
                     "android": {
                         "enableProguardInReleaseBuilds": true,
-                        "enableShrinkResourcesInReleaseBuilds": true
+                        "enableShrinkResourcesInReleaseBuilds": false
                     }
                 }
             ]

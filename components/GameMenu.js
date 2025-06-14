@@ -159,7 +159,7 @@ const GameMenu = (props) => {
                 )}
                 <Text style={styles.footer}>
                     <Image
-                        source={require("../public/favicon-32x32.png")}
+                        source={require("../assets/favicon-32x32.png")}
                         style={styles.footerIcon}
                     />
                     <Text style={styles.footerText}>An Inkwolf production</Text>
