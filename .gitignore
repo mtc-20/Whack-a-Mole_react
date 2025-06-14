@@ -13,6 +13,7 @@ web-build/
 dist/
 android/
 ios/
+build/
 
 # macOS
 .DS_Store

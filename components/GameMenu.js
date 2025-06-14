@@ -16,21 +16,25 @@ import { connect } from "react-redux";
 import { updateTimeLimit } from "../redux";
 import colors from "./colors";
 
+const image_mole = require("../assets/mole.png");
+
 const ListItem = ({ title }) => (
     <View style={styles.listItem}>
         <Text style={styles.listText}>{`\u29BF  ${title}`}</Text>
     </View>
 );
 
-// Constants for screen width to handle small screens
+// Constants
+const GAME_TIME = 60;
+// Max screen width to handle small screens
 const SMALL_SCREEN_WIDTH = 600;
+
 // Check the width of the window
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const GameMenu = (props) => {
     const { setGameOver, setTimeLeft } = props;
-    const gameTime = 60;
 
     // fadeAnim will be used as the value for opacity. Initial Value: 1
     const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -96,10 +100,10 @@ const GameMenu = (props) => {
             setGameOver(false);
             // TODO: Find a better way to handle this.
             // Update the time limit in the store so that the moles start popping
-            props.updateTimeLimit(gameTime);
+            props.updateTimeLimit(GAME_TIME);
             // Set time limit so that the timer starts
-            setTimeLeft(gameTime);
-            console.log("Setting timer to ", gameTime);
+            setTimeLeft(GAME_TIME);
+            console.log("Setting timer to ", GAME_TIME);
         });
     };
 
@@ -114,7 +118,7 @@ const GameMenu = (props) => {
                     }
                 ]}
             >
-                <Text style={styles.header}>Wha-a-m!</Text>
+                <Text style={styles.header}>Wh-a-m!</Text>
                 <Text style={styles.subHeader}>Whack-A-Mole!!</Text>
                 <FlatList
                     data={Instructions}
@@ -124,7 +128,7 @@ const GameMenu = (props) => {
                 />
                 <SafeAreaView>
                     <Animated.Image
-                        source={require("../assets/mole.png")}
+                        source={image_mole}
                         style={[
                             styles.mole,
                             {
@@ -155,7 +159,7 @@ const GameMenu = (props) => {
                 )}
                 <Text style={styles.footer}>
                     <Image
-                        source={require("../public/favicon-32x32.png")}
+                        source={require("../assets/favicon-32x32.png")}
                         style={styles.footerIcon}
                     />
                     <Text style={styles.footerText}>An Inkwolf production</Text>
